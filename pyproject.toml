@@ -1,0 +1,12 @@
+[project]
+name = "PyNui"
+version = "0.0.1"
+dynamic = ["dependencies"]
+
+[project.scripts]
+config = "pynui.src.config:print_envs"
+main = "pynui.src.main:main"
+test-script = "pynui.tests.simple_import_test:test"
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
