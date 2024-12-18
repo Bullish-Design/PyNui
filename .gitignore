@@ -25,6 +25,7 @@ devenv.lock
 *logs*
 log/**
 *code_output*
+rplugin/
 
 
 # Misc

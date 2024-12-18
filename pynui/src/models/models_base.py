@@ -1,10 +1,12 @@
 from __future__ import annotations
 from pydantic import BaseModel, Field, validator
 from typing import Any, Dict, List, Optional, Union, Callable, TypeVar
-from abc import ABC
-import json
+from dataclasses import dataclass
 
-from pynui.src.models.ui_base import NuiComponent
+# from abc import ABC
+# import json
+
+from pynui.src.models.components import NuiComponent, BaseSettings, LuaCallable
 
 
 class TextInput(NuiComponent):
@@ -39,46 +41,6 @@ class Select(NuiComponent):
     @staticmethod
     def option(text: str, data: Optional[Dict[str, Any]] = None) -> SelectOption:
         return SelectOption(text=text, **(data or {}))
-
-
-class LuaCallable:
-    """Wrapper for Python callbacks that will be converted to Lua functions"""
-
-    def __init__(self, callback: Callable):
-        self.callback = callback
-        self.callback_id = str(id(callback))
-
-    def to_lua(self) -> str:
-        """Convert to Lua function string"""
-        return f"""
-        function(...)
-            local args = vim.fn.json_encode({{...}})
-            vim.fn.pynvim_callback("{self.callback_id}", args)
-        end
-        """
-
-
-class BaseSettings(BaseModel):
-    """Base settings model with Lua conversion support"""
-
-    class Config:
-        arbitrary_types_allowed = True
-
-    def to_lua(self) -> Dict[str, Any]:
-        """Convert settings to Lua-compatible format"""
-        result = {}
-        for key, value in self.dict(exclude_none=True).items():
-            if isinstance(value, LuaCallable):
-                result[key] = value.to_lua()
-            elif isinstance(value, BaseSettings):
-                result[key] = value.to_lua()
-            else:
-                result[key] = value
-        return result
-
-    def to_lua_code(self) -> str:
-        """Convert settings to Lua code string"""
-        return f"vim.fn.json_decode([==[{json.dumps(self.to_lua())}]==])"
 
 
 class ComponentSettings(BaseSettings):

@@ -12,7 +12,9 @@ from pynui.src.models.models_base import (
     SelectOption,
     LuaCallable,
 )
-from pynui.src.models.ui_base import NuiComponent, NuiRenderer
+from pynui.src.models.ui_base import NuiRenderer  # NuiComponent
+
+print(f"Hello?")
 
 
 # Plugin code

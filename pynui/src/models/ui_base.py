@@ -1,40 +1,10 @@
 from __future__ import annotations
 import pynvim
 from typing import Any, Dict, List, Optional, Type, TypeVar
-from abc import ABC, abstractmethod
-from pynui.src.models.models_base import BaseSettings
 
-
-class NuiComponent(ABC):
-    """Base class for all Nui Components"""
-
-    def __init__(self, nvim: pynvim.Nvim, settings: BaseSettings):
-        self.nvim = nvim
-        self.settings = settings
-        self._component_id = str(id(self))
-        self._lua_component = None
-
-    def _init_lua_component(self):
-        """Initialize the underlying Lua component"""
-        lua_code = f"""
-        local props = {self.settings.to_lua_code()}
-        local component = require('nui-components.{self.component_name}')(props)
-        return component
-        """
-        self._lua_component = self.nvim.lua.execute(lua_code)
-        return self._lua_component
-
-    @property
-    @abstractmethod
-    def component_name(self) -> str:
-        """Return the name of the Lua component"""
-        pass
-
-    @property
-    @abstractmethod
-    def settings_class(self) -> Type[BaseSettings]:
-        """Return the settings class for this component"""
-        pass
+# from pynui.src.models.models_base import BaseSettings
+from pynui.src.models.components import NuiComponent
+from pynui.src.models.models_base import RendererSettings
 
 
 class NuiRenderer:
