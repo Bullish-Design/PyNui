@@ -18,12 +18,12 @@ print(f"Hello?")
 
 
 # Plugin code
-@pynvim.plugin
+# @pynvim.plugin
 class MyPlugin:
     def __init__(self, nvim):
         self.nvim = nvim
 
-    @pynvim.command("MyPluginForm", nargs="*", sync=False)
+    # @pynvim.command("MyPluginForm", nargs="*", sync=False)
     def show_form(self, args):
         """Show a form using PyNui components"""
         # Create renderer with settings

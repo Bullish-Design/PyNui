@@ -10,8 +10,6 @@ from pydantic import BaseModel
 
 
 # Classes
-
-
 class LuaCallable:
     """Wrapper for Python callbacks that will be converted to Lua functions"""
 

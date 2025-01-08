@@ -13,5 +13,9 @@ class Keymap:
     to_keys: str
     description: Optional[str]
 
+    # Return the lua code for the keymap
+    def set_keymap(self) -> Any:
+        pass
+
 
 # Misc ------------------------------------------------------------
